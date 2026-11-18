@@ -1,0 +1,8 @@
+out/
+out-verify/
+capture-report.json
+verification.json
+*.tmp
+/vendor/*
+!/vendor/makefun-game.ts
+serve.ts

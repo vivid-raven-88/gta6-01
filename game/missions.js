@@ -1,0 +1,16 @@
+'use strict';
+(() => {const G=VC,T=THREE;G.chapter=0;G.stage=0;G.missionTimer=0;G.routeIndex=0;
+ const jobs=[{name:'01 / A borrowed life',goal:'Steal a car. Meet Sera at the Orchid Market.',point:[0,-72],reward:400,line:'Sera: Bring wheels to the market. I have a job that can buy your freedom.'},{name:'02 / The velvet ledger',goal:'Reach North Freight. Take the ledger from the guards.',point:[-144,-216],reward:900,line:'Sera: The port syndicate keeps its bribes in a paper ledger. Take it.'},{name:'03 / Loose ends',goal:'Lose the police, then deliver the ledger to Saffron Quay.',point:[144,216],reward:1400,line:'Inez: I have their names. Every paid badge in the city. Time to disappear.'},{name:'04 / Signal to noise',goal:'Drive to Radio Saffron. Put the evidence on the air.',point:[72,72],reward:2000,line:'Sera: One last ride. Get it to the transmitter and everyone hears the truth.'},{name:'CITY / After the broadcast',goal:'Free roam: run courier routes, explore, or evade patrols.',point:[216,0],reward:250,line:'Sera: The harbor belongs to the city again. There is still work for us.'}];G.jobs=jobs;
+ G.marker=new T.Group();const ring=new T.Mesh(new T.TorusGeometry(3,.18,8,40),new T.MeshBasicMaterial({color:'#ffca60'}));ring.rotation.x=Math.PI/2;ring.position.y=.3;G.marker.add(ring);const diamond=new T.Mesh(new T.OctahedronGeometry(1),new T.MeshStandardMaterial({color:'#ffcd66',emissive:'#a45010',emissiveIntensity:.5}));diamond.position.y=5;G.marker.add(diamond);G.scene.add(G.marker);
+ G.job=()=>jobs[Math.min(G.chapter,4)];G.target=()=>G.chapter===1&&G.stage===1?[-144,-216]:G.job().point;
+ G.completeMission=()=>{const job=G.job();G.player.cash+=job.reward;G.player.ammo+=24;G.sound.effect('reward');G.say('JOB COMPLETE / +$'+job.reward+' / '+job.name.slice(5));G.chapter=Math.min(4,G.chapter+1);G.stage=0;G.save();G.nextDialogue={at:G.time+5,text:G.job().line}};
+ G.updateMissions=(dt,time)=>{const p=G.player,j=G.job(),target=G.target(),d=Math.hypot(p.x-target[0],p.z-target[1]);G.marker.position.set(target[0],0,target[1]);diamond.rotation.y=time;diamond.position.y=5+Math.sin(time*2)*.4;G.missionTimer+=dt;
+ if(G.chapter===0&&d<8&&p.car)G.completeMission();
+ if(G.chapter===1){if(G.stage===0&&d<35){G.stage=1;G.spawnGuard(-150,-207);G.spawnGuard(-138,-207);G.addHeat(1.5);G.say('Inez: Two syndicate guards. F to fire. The ledger is at the gold marker.')}if(G.stage===1&&d<6&&!p.car){G.stage=2;G.addHeat(1.5);G.completeMission()}}
+ if(G.chapter===2&&d<9){if(G.heat<.1)G.completeMission();else if(time-(G.warnAt||0)>8){G.warnAt=time;G.say('Sera: You brought police. Lose them before we meet.')}}
+ if(G.chapter===3&&d<8)G.completeMission();
+ if(G.chapter===4&&d<8){p.cash+=250;G.routeIndex++;j.point=[G.roads[(G.routeIndex*3)%7],G.roads[(G.routeIndex+2)%7]];G.say('COURIER DROP / +$250 / Next delivery marked in gold.');G.save()}
+ if(G.nextDialogue&&time>G.nextDialogue.at){G.say(G.nextDialogue.text);G.nextDialogue=null}
+ };
+ G.repair=()=>{const p=G.player;if(!p.car){if(p.cash>=80){p.cash-=80;p.health=100;p.ammo+=36;G.say('SUPPLIES / Health restored. 36 rounds. -$80.')}return}if(p.cash>=100){p.cash-=100;p.car.health=100;p.health=Math.min(100,p.health+20);G.say('ROADSIDE REPAIR / Vehicle restored. -$100.');G.sound.effect('reward')}else G.say('Inez: Repairs cost $100. Finish a job first.')};
+})();

@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Velvet Circuit — Port Saffron</title><link rel="stylesheet" href="style.css"></head>
+<body><div id="world"></div>
+<main id="hud" hidden>
+ <header><div class="brand">VC <span>PORT SAFFRON / 17:42</span></div><div id="stats"></div></header>
+ <section id="mission"><small>THE VELVET FILES</small><h2 id="missionTitle"></h2><p id="objective"></p><div id="progress"></div></section>
+ <aside id="wanted"></aside><div id="reticle">+</div>
+ <section id="mapPanel"><canvas id="minimap" width="204" height="174"></canvas><div id="district">ORCHID PROMENADE</div></section>
+ <section id="vehicle"><strong id="speed">0</strong><span id="mode">ON FOOT</span></section>
+ <div id="hint"></div><footer>WASD move / steer · SHIFT sprint / boost · E enter / exit · SPACE brake · F / click fire · Q repair · M save · ESC pause</footer>
+ <section id="dialogue" hidden></section>
+</main>
+<section id="title"><div class="titleArt"><div class="sun"></div><div class="stripes"></div><div class="posterRoad"></div><div class="posterCar"></div><span class="edition">AN ORIGINAL OPEN WORLD / OFFLINE EDITION</span><h1>VELVET<br><em>CIRCUIT</em></h1><p>One courier. A stolen ledger. A city that never forgives.</p></div><div class="titleMenu"><small>WELCOME TO PORT SAFFRON</small><h2>The coast has a price.</h2><p>Inez Vale ran packages for the wrong people. Tonight, she takes the ledger that can bring down the port syndicate. Find a ride. Meet Sera. Stay ahead of the blue lights.</p><button id="start">ENTER THE CITY <span>↗</span></button><button id="newGame" class="secondary">NEW STORY</button><p class="keys">WASD · drive & walk<br>E · borrow a different life<br>Mouse · look & fire<br>ESC · pause & save</p><label><input type="checkbox" id="audio" checked> SYNTH RADIO & CITY SOUND</label><div class="stamp">NO CONNECTION REQUIRED<br>PROGRESS SAVED ON THIS DEVICE</div></div></section>
+<script src="vendor/three.min.js"></script><script src="render.js"></script><script src="city.js"></script><script src="vehicles.js"></script><script src="characters.js"></script><script src="input.js"></script><script src="sound.js"></script><script src="traffic.js"></script><script src="police.js"></script><script src="missions.js"></script><script src="hud.js"></script><script src="main.js"></script></body></html>
